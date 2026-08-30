@@ -1,0 +1,70 @@
+{
+  "team_id": "LSH26-T001",
+  "problem_id": "P08",
+  "repository_name": "lsh26-t001-p08",
+  "live_url": "<LIVE URL — fill in after deploying on Streamlit Community Cloud>",
+  "demo_video_url_optional": "",
+  "event_start_code": "LSH26-8490-C900",
+  "repository_created_before_release": true,
+  "pre_event_materials": [],
+  "sample_data": {
+    "loads_published_fixture": true,
+    "method": "file upload",
+    "reset_instructions": "The app holds no state. Open the live URL, then in the sidebar under 'Case File' upload P08_school_results_public.json from the organizers' submission kit; the 25 published cases appear in the 'Data Source' selector. To restore the initial state, reload the page — nothing is stored. With no file uploaded the app scores its own seeded 60-student cohort, so every screen still works."
+  },
+  "problem_solving_method": "The rules were written as a pure Python module (engine.py) with no Streamlit import, so the whole rule set could be run headless in a terminal loop over all 25 published cases and compared against the counts stated in the brief before any interface existed. Rule evaluation order is the core of P08: absence (R-12) and the theory/practical part gate (R-11) are both checked before the grade table (R-10), because a theory 24 with a perfect practical 25 totals 49 and looks like a pass. The trace is built in the same branch that sets the grade point, never reconstructed afterwards, so the reason shown to a teacher cannot drift from the number used. GPA uses Decimal with ROUND_HALF_UP because Python's round() is banker's rounding and grade points arrive in half steps. The UI then maps one tab onto each of the four required items so the work can be checked without explanation.",
+  "requirements": {
+    "R1": {
+      "status": "complete",
+      "evidence": "Tab '1 Cohort'. Case selector over the uploaded fixture (60-80 students, two classes, six compulsory subjects plus one optional, practical subjects split into theory and practical), plus a seeded generator — engine.py generate_cohort() — producing 60 students across two classes with all four hard archetypes guaranteed. The roster names each student's edge case and the header shows the hard-edge count against the required minimum of 8 (seed 7 yields 20)."
+    },
+    "R2": {
+      "status": "complete",
+      "evidence": "Tab '2 Results'. engine.py subject_row() and student_result(): a grade point per subject, then raw GPA, final GPA and letter grade per student, shown to two decimals with a CSV download."
+    },
+    "R3": {
+      "status": "complete",
+      "evidence": "Tab '3 Trace'. Seven rows per student — mark used, grade point, rule ID (R-10/R-11/R-12), plain-English reason. When a compulsory zero cancels a strong average, a banner names the culprit subject and shows raw GPA beside final GPA (R-13). Built in engine.py subject_row(), rendered by trace_frame() in app.py."
+    },
+    "R4": {
+      "status": "complete",
+      "evidence": "Tab '4 Office List'. engine.py checking_lists() — three independent passes (optional grade point at or below 2.0 including an absent optional; practical part below 8 in any subject; AB in any subject). A student may appear on more than one list. Each list downloads as CSV."
+    }
+  },
+  "team_members": [
+    {
+      "registered_name": "<REGISTERED NAME — fill in>",
+      "github_username": "nafizurnayem",
+      "major_contribution": "Specified and verified the P08 rule set, built the engine and the five-tab Streamlit interface, ran the headless verification against the published counts and deployed the app.",
+      "evidence_paths_or_commits": [
+        "engine.py",
+        "app.py",
+        "test_engine.py"
+      ]
+    }
+  ],
+  "major_design_decisions": [
+    "The mark-to-grade-point table is not given in the brief, so the standard Bangladesh SSC scale is used (80+=5.0, 70-79=4.0, 60-69=3.5, 50-59=3.0, 40-49=2.0, 33-39=1.0, below 33=0). Its boundaries mirror the letter bands in the brief and its pass mark of 33 equals theory 25 plus practical 8. It is one list at the top of engine.py and can be swapped in seconds.",
+    "engine.py imports no Streamlit, so the rules can be executed and checked from a terminal, independently of the interface.",
+    "The trace line is produced by the same branch that decides the grade point, so the stated reason and the number can never disagree.",
+    "Decimal with ROUND_HALF_UP for every displayed figure; the 5.00 cap is applied before rounding.",
+    "The published fixture is not redistributed in this repository; judges load it, or any file in the same shape, through the sidebar uploader. With no file loaded the app scores its own seeded cohort so no screen is empty.",
+    "The four required items are the four numbered tabs, in order, so a judge can tick them without a walkthrough."
+  ],
+  "known_limitations": [
+    "The sample-data file is not committed, so the 25 published cases appear only after a judge uploads the JSON in the sidebar. Without it the app runs on its generated cohort.",
+    "No database or authentication: the app holds no state between page loads, and nothing a judge does is saved.",
+    "Uploaded files are assumed to match the published schema; a malformed file raises a Streamlit error rather than a friendly message.",
+    "No per-class statistics, historical comparison or PDF marksheet export.",
+    "The interface was verified through Streamlit's own AppTest harness and by hand in a browser; there is no automated visual regression test."
+  ],
+  "ai_tools_used": [
+    {
+      "tool": "Claude Code (Anthropic, Opus 5)",
+      "used_for": "Drafting engine.py, app.py, test_engine.py and the repository documentation from the team's specification of the P08 rules.",
+      "how_output_was_verified": "Checked line by line against the organizers' published clarifications; `python engine.py` reproduces all seven published population counts over the full 1,765-student fixture and asserts the four invariants; `python test_engine.py` runs 17 rule checks covering every documented trap; five students were re-computed by hand, including a high-average failure, a practical fail with a passing theory mark and an absence."
+    }
+  ],
+  "licenses_file": "LICENSES.md",
+  "declaration": "The information above is complete and truthful to the best of the team's knowledge."
+}

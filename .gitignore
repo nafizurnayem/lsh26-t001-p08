@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+.streamlit/secrets.toml
+
+# Sample data supplied by the organizers — loaded through the sidebar uploader,
+# not redistributed here.
+P08_school_results_public.json
+
+# Working notes, not part of the submission
+P08_PLAN.md
+STATUS.md
+SCOPE.md
+LofiStack-Hackathon-2026-Submission-Kit-v2.2/
+*.csv
