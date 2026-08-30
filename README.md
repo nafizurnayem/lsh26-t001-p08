@@ -2,7 +2,7 @@
 
 **Team ID:** `LSH26-T001` · **Problem ID:** `P08` · **Repository:** `lsh26-t001-p08`
 
-**Live:** `<LIVE URL — fill in after deploying>`
+**Live:** `https://lsh26-t001-p08.streamlit.app/`
 
 Reads a school marks file, computes each student's per-subject grade points,
 GPA and letter grade under the P08 rules, and produces a per-student rule
@@ -77,7 +77,7 @@ can be checked without a walkthrough.
 
 | Member | GitHub | Major contribution |
 |---|---|---|
-| `<REGISTERED NAME — fill in>` | `nafizurnayem` | Specified and verified the P08 rule set, built `engine.py` and the five-tab Streamlit interface, ran the headless verification against the published counts, deployed the app. |
+| Md Nafizur Nayem | `nafizurnayem` | Specified and verified the P08 rule set, built `engine.py` and the five-tab Streamlit interface, ran the headless verification against the published counts, deployed the app. |
 
 ## Major decisions
 
